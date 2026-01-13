@@ -1,0 +1,189 @@
+# ==================== 가상환경 및 Python 관련 ====================
+# 가상환경 (.venv) 활성화
+alias sv='source .venv/bin/activate'
+# AI 스크립트 실행
+alias ai='python3 /home/jeonghun/ai.py'
+# pip 명령어를 uv pip로 대체
+alias pip='uv pip'
+
+# ==================== Zsh 설정 관련 ====================
+# .zshrc를 nvim으로 편집
+alias zs='nvim ~/.zshrc'
+# .zshrc를 cursor로 편집
+alias zshrc="cursor ~/.zshrc"
+# .zshrc 변경사항 적용
+alias sz="source ~/.zshrc"
+# .zsh_aliases를 nvim으로 편집
+alias zsa="nvim ~/.zsh_aliases"
+
+# ==================== Tmux 관련 ====================
+# 새 tmux 세션 생성 (사용법: tn 세션명)
+alias tn='tmux new-session -s'
+# tmux 세션 연결 (사용법: ta 세션명)
+alias ta="tmux attach -t"
+# tmux 세션 목록 확인
+alias tl='tmux list-sessions'
+# tmux 세션 종료 (사용법: tk 세션명)
+alias tk='tmux kill-session -t'
+# 모든 tmux 세션 종료
+alias tka='tmux kill-server'
+
+# ==================== Docker 관련 ====================
+# Docker Compose 재시작 (내려졌다가 다시 시작)
+alias cdcu='docker compose down && docker compose up -d'
+# Docker Compose 백그라운드 시작
+alias dcu='docker compose up -d'
+# Docker Compose 중지 (오타 수정됨)
+alias dcd='docker compose down'
+# 모든 Docker 컨테이너 목록
+alias ca='docker ps -a'
+# Docker 이미지 목록
+alias di='docker images'
+
+# ==================== Git 관련 ====================
+# Lazygit 실행
+alias lgit='lazygit'
+# Git 상태 확인 (stauts -> status 수정)
+alias gs='git status'
+# Git 스테이징
+alias ga='git add'
+# Git 커밋 (사용법: gc "메시지")
+alias gc='git commit -m'
+# Git 푸시
+alias gp='git push'
+# Git 로그 그래프 보기
+alias gl='git log --oneline --graph --all'
+
+# ==================== 에디터 관련 ====================
+# nvim 실행
+alias nvim="/usr/bin/nvim"
+# VSCode 설정 열기
+alias settings='cursor .vscode/settings.json'
+
+# ==================== 파일 관련 (batcat) ====================
+# cat 대신 batcat 사용 (plain 모드)
+alias cat='batcat -p'
+# batcat 별칭
+alias bat='batcat'
+
+# ==================== Antigravity (암호화 파일 편집) ====================
+# .env 파일을 antigravity로 편집
+alias .env='antigravity .env'
+# .gitignore 파일을 antigravity로 편집
+alias .gitignore='antigravity .gitignore'
+# antigravity 별칭
+alias ag='antigravity'
+
+export PATH="$HOME/.bun/bin:$PATH"
+
+# ==================== Claude Code 관련 ====================
+# Claude Code 실행 (권한 스킵)
+alias claude='claude --dangerously-skip-permissions'
+# CCR Code 실행 (권한 스킵)
+alias ccc='ccr code --dangerously-skip-permissions'
+
+# ==================== 시스템 모니터링 및 관리 ====================
+# 메모리 사용량 및 상위 프로세스 확인
+alias check-mem='free -h && echo "---" && ps aux --sort=-%mem | head -10'
+# Antigravity 서버 정리
+alias clean-antigravity='pkill -f antigravity-server && echo "- Antigravity 서버 정리 완료"'
+# 모든 MCP 서버 정리
+alias clean-all='pkill -f "antigravity-server|mongodb-mcp-server" && echo "- 전체 서버 정리 완료"'
+# 실행 중인 MCP 서버 확인
+alias check-servers='echo "Antigravity: $(ps aux | grep antigravity-server | grep -v grep | wc -l)개" && echo "MongoDB MCP: $(ps aux | grep mongodb-mcp-server | grep -v grep | wc -l)개"'
+
+# ==================== Journalctl (로그) 관련 ====================
+# 시스템 부팅 이후 전체 로그
+alias jc='sudo journalctl -xe -b'
+# 에러 로그만 (priority 4)
+alias jce='sudo journalctl -xe -p 4'
+# 특정 서비스의 에러 로그 (사용법: jcs nginx)
+jcs() {
+  sudo journalctl -u $1 -xe -p 4
+}
+# 특정 서비스의 전체 로그 (사용법: js docker)
+js() {
+  sudo journalctl -u $1 -xe
+}
+# 특정 서비스의 에러 로그 (사용법: jse docker)
+jse() {
+  sudo journalctl -u $1 -xe -p 4
+}
+
+# ==================== 기본 명령어 별칭 ====================
+# 상세 목록 보기
+alias ll='ls -alFh'
+# 히스토리 보기
+alias h='history'
+# 화면 클리어
+alias c='claude'
+# PATH 환경변수 보기 (줄바꿈)
+alias path='echo $PATH | tr ":" "\n"'
+# 포트 스크립트 실행
+alias port='~/port.sh'
+
+# ==================== Docker 로그 관련 ====================
+# Docker 로그 확인 (사용법: dl 컨테이너명 [줄수], 기본 100줄)
+dl() {
+  local lines=${2:-100}
+  docker logs -f --tail "$lines" "$1"
+}
+# Docker 로그 필터링 (사용법: dlg 컨테이너명 검색어)
+dlg() {
+  docker logs -f $1 | grep --color=auto -i $2
+}
+# Docker 실시간 로그
+alias dlf='docker logs -f'
+# Docker 컨테이너 상태 정렬 보기
+alias dlps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"'
+
+# ==================== 프로세스 관리 ====================
+# 프로세스 검색 (사용법: pa python)
+pa() {
+  ps aux | grep -iE "vsz|${1}" | grep -v grep
+}
+# 프로세스 상세 정보 (사용법: px nginx)
+px() {
+  ps -fp $(pgrep -d, -i $1) 2>/dev/null
+}
+# 프로세스 실시간 모니터링 (사용법: pt java)
+pt() {
+  top -p $(pgrep -d, -i $1)
+}
+# 프로세스 강제 종료 (사용법: pk chrome)
+alias pk='pkill -9 -f'
+# 포트 사용 확인 (사용법: lp 8080)
+alias lp='sudo lsof -i -P -n | grep'
+# 프로세스 상세 정보 + 포트 (사용법: pap nginx)
+pap() {
+  printf "%-10s %-10s %-7s %-7s %-20s %s\n" "USER" "PID" "%CPU" "%MEM" "PORTS" "COMMAND"
+  echo "---------------------------------------------------------------------------------------"
+  ps aux | grep -i "$1" | grep -v "grep" | while read -r line; do
+    USER=$(echo $line | awk '{print $1}')
+    PID=$(echo $line | awk '{print $2}')
+    CPU=$(echo $line | awk '{print $3}')
+    MEM=$(echo $line | awk '{print $4}')
+    COMM=$(echo $line | awk '{for(i=11;i<=NF;i++) printf $i" "; print ""}')
+    PORTS=$(sudo ss -tulpn | grep "pid=$PID," | awk '{print $5}' | cut -d':' -f2 | sort -u | xargs | tr ' ' ',')
+    if [ -z "$PORTS" ]; then PORTS="-"; fi
+    printf "%-10s %-10s %-7s %-7s %-20s %s\n" "$USER" "$PID" "$CPU" "$MEM" "[$PORTS]" "$COMM"
+  done
+}
+
+# ==================== Systemd 서비스 관리 ====================
+# systemctl 실행 (사용법: st start nginx)
+alias st='sudo systemctl'
+# 실행 중인 서비스 목록
+alias sl='systemctl list-units --type=service --state=running'
+# 실패한 서비스 목록
+alias sf='systemctl list-units --type=service --state=failed'
+# 전체 서비스 목록
+alias sa='systemctl list-units --type=service'
+# 서비스 검색 (사용법: ss docker)
+ss() {
+  systemctl list-units --type=service | grep -i "$1"
+}
+
+# ==================== 기타 ====================
+# Alias 도움말 실행
+alias help="~/help.sh"
