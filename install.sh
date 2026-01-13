@@ -6,7 +6,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "=== Dotfiles 설치 시작 ==="
 
 # zsh 설정
-echo "[1/6] zsh 설정..."
+echo "[1/8] zsh 설정..."
 ln -sf "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 ln -sf "$DOTFILES_DIR/zsh/.zsh_aliases" "$HOME/.zsh_aliases"
 ln -sf "$DOTFILES_DIR/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
@@ -35,28 +35,36 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
 fi
 
 # git 설정
-echo "[2/6] git 설정..."
+echo "[2/8] git 설정..."
 ln -sf "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 
 # tmux 설정
-echo "[3/6] tmux 설정..."
+echo "[3/8] tmux 설정..."
 ln -sf "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 
 # nvim 설정
-echo "[4/6] nvim 설정..."
+echo "[4/8] nvim 설정..."
 mkdir -p "$HOME/.config/nvim"
 ln -sf "$DOTFILES_DIR/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 
 # claude 설정
-echo "[5/6] Claude Code 설정..."
+echo "[5/8] Claude Code 설정..."
 mkdir -p "$HOME/.claude/hooks"
 ln -sf "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 ln -sf "$DOTFILES_DIR/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 ln -sf "$DOTFILES_DIR/claude/hooks/notify.sh" "$HOME/.claude/hooks/notify.sh"
 chmod +x "$HOME/.claude/hooks/notify.sh"
 
+# npm 설정
+echo "[6/8] npm 설정..."
+ln -sf "$DOTFILES_DIR/npm/.npmrc" "$HOME/.npmrc"
+
+# editorconfig 설정
+echo "[7/8] editorconfig 설정..."
+ln -sf "$DOTFILES_DIR/editor/.editorconfig" "$HOME/.editorconfig"
+
 # 필수 패키지 설치
-echo "[6/6] 필수 패키지 확인..."
+echo "[8/8] 필수 패키지 확인..."
 if command -v apt-get &> /dev/null; then
     sudo apt-get update -qq
     sudo apt-get install -y -qq zsh tmux neovim curl git
