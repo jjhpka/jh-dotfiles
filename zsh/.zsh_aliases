@@ -8,7 +8,7 @@ alias pip='uv pip'
 
 # ==================== Zsh 설정 관련 ====================
 # .zshrc를 nvim으로 편집
-alias zs='nvim ~/.zshrc'
+alias zs='nvim ~/.zsh_aliases'
 # .zshrc를 cursor로 편집
 alias zshrc="cursor ~/.zshrc"
 # .zshrc 변경사항 적용
@@ -187,3 +187,5 @@ ss() {
 # ==================== 기타 ====================
 # Alias 도움말 실행
 alias help="~/help.sh"
+alias apt="nala"
+alias sudo="sudo " 
